@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#include <lights/Lights2.h>
+#include <lights/Lights.h>
 #include <accel/Accel.h>
 #include <WiFi.h>
 

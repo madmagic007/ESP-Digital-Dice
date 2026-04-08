@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Arduino.h>
-#include <lights/Lights2.h>
+#include <lights/Lights.h>
 
 class Randomiser {
 private:
