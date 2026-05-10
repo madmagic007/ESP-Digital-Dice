@@ -1,6 +1,5 @@
 
 #include "Lights.h"
-#include <Util.h>
 
 u8_t Lights::diceValues[3] = {0, 0, 0};
 u8_t Lights::dicePins[3] = {DICE_1, DICE_2, DICE_3};
@@ -32,12 +31,16 @@ void Lights::setup() {
 
 void Lights::setValue(u8_t val, u8_t dice) {
     diceValues[dice] = val;
+
+    ble::notifyValues(diceValues);
 }
 
 void Lights::setValues(u8_t val1, u8_t val2, u8_t val3) {
     diceValues[0] = val1;
     diceValues[1] = val2;
     diceValues[2] = val3;
+
+    ble::notifyValues(diceValues);
 }
 
 void Lights::displayBatteryValue() {
@@ -74,12 +77,8 @@ void Lights::setBrightness(u8_t val) {
         u32_t t = b;
         b = a % b;
         a = t;
-        
-        Serial.println("in loop");
     }
     u32_t gcd = a;
-    
-    Serial.println("after loop");
     
     on /= gcd;
     off /= gcd;

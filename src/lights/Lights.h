@@ -3,6 +3,8 @@
 #include <soc/gpio_struct.h>
 #include <Arduino.h>
 #include <PinMapping.h>
+#include <Util.h>
+#include <ble/ble.h>
 
 class Lights {
 private:
