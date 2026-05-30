@@ -4,18 +4,27 @@
 #include <BLEDevice.h>
 #include <BLEServer.h>
 #include <BLEUtils.h>
+#include <lights/Lights.h>
 
 #define SERVICE_UUID    "12345678-1234-1234-1234-123456789012"
+
 #define TX_DIE_VAL      "11111111-1111-1111-1111-111111111111"
 #define TX_PARAMS       "22222222-2222-2222-2222-222222222222"
-#define RX_PARAMS       "33333333-3333-3333-3333-333333332222"
+#define RX_PARAMS       "33333333-3333-3333-3333-333333333333"
 
 class ble {
 public:
     static void init();
     static void notifyValues(u8_t* diceValues);
+    static void notifyParam(String key, u8_t value);
     static inline bool connected = false;
+    static inline unsigned long lastResponse = 0;
 
 private:
-    static inline BLECharacteristic* pCharacteristic = nullptr;
+    static inline BLECharacteristic* dieValCharacteristic = nullptr;
+    static inline BLECharacteristic* txCharacteristic = nullptr;
+    static inline BLECharacteristic* rxCharacteristic = nullptr;
+    static void watchdogTask(void* _);
+
+    static inline const unsigned long HEARTBEAT_TIMEOUT = 5000; 
 };

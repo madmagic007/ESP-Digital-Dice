@@ -4,9 +4,7 @@
 #include <math.h>
 
 #define BAT_ADC_PIN 2
-#define VREF 3.3f
-#define ADC_MAX 4095.0f
-#define BAT_DIV_RATIO ((10.0f + 33.0f) / 10.0f)
+#define BAT_DIV_RATIO ((10.0f + 33.0f) / 33.0f)
 
 class Util {
     public:
@@ -20,14 +18,19 @@ class Util {
             long sum = 0;
 
             for (int i = 0; i < samples; i++) {
-                sum += analogRead(BAT_ADC_PIN);
+                sum += analogReadMilliVolts(BAT_ADC_PIN);
                 delay(1);
             }
 
             float avg = sum / (float)samples;
-            float v_adc = (avg / ADC_MAX) * VREF;
-            float v_batt = v_adc * BAT_DIV_RATIO;
+            float v_batt = avg * BAT_DIV_RATIO / 1000.0;
 
             return round(v_batt * 100.0) / 100.0;
+        }
+
+        static u8_t getBatteryPercentage() {
+            float voltage = readBatteryVoltage();
+            float pct = (voltage - 3.0) / (4.2 - 3.0) * 100.0;
+            return round(pct);
         }
 };

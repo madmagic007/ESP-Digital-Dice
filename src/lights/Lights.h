@@ -26,4 +26,6 @@ public:
     static void setValues(u8_t val1, u8_t val2, u8_t val3);
     static void displayBatteryValue();
     static void setBrightness(u8_t val);
+
+    static inline u8_t brightness = 0;
 };

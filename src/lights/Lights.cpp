@@ -44,9 +44,8 @@ void Lights::setValues(u8_t val1, u8_t val2, u8_t val3) {
 }
 
 void Lights::displayBatteryValue() {
-    float batteryVoltage = Util::readBatteryVoltage();
-    float percentage = (batteryVoltage - 3.0) / (4.2 - 3.0) * 100.0;
-    u8_t diceSum = round(percentage / 100.0 * 18.0);
+    u8_t percentage =  Util::getBatteryPercentage();
+    u8_t diceSum = round(percentage / 100 * 18);
     
     u8_t die1 = diceSum >= 6 ? 6 : diceSum;
     diceSum -= die1;
@@ -60,37 +59,13 @@ void Lights::displayBatteryValue() {
 } 
 
 void Lights::setBrightness(u8_t val) {
-    if (val > 100) val = 100;
-    if (val < 1) val = 1;
+    brightness = val;
+    if (val > 92) val = 92;
+    if (val < 8) val = 8; // shorter than 8us causes issues
     
-    u32_t on = val;
-    u32_t off = 100 - val;
-    
-    if (off == 0) {
-        timeOn = 2;
-        timeOff = 0;
-        return;
-    }
-    
-    u32_t a = on, b = off;
-    while (b != 0) {
-        u32_t t = b;
-        b = a % b;
-        a = t;
-    }
-    u32_t gcd = a;
-    
-    on /= gcd;
-    off /= gcd;
-    
-    const u32_t minPeriod = 8; // too fast firing timer causes hang
-    u32_t total = on + off;
-    if (total < minPeriod) {
-        u32_t scale = (minPeriod + total - 1) / total;
-        on *= scale;
-        off *= scale;
-    }
-    
+    u32_t on = (val * 100) / 100;
+    u32_t off = 100 - on;
+
     timeOn = (u8_t)on;
     timeOff = (u8_t)off;
 }
