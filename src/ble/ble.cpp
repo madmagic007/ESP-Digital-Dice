@@ -3,9 +3,7 @@
 void ble::notifyValues(u8_t* diceValues) {
     if (!connected || pCharacteristic == nullptr) return;
 
-    uint8_t packed = (diceValues[0] << 5) | (diceValues[1] << 2) | diceValues[2];
-
-    pCharacteristic->setValue(&packed, 1);
+    pCharacteristic->setValue(diceValues, 3);
     pCharacteristic->notify();
 }
 
@@ -30,7 +28,7 @@ void ble::init() {
     BLEService *pService = pServer->createService(SERVICE_UUID);
     
     pCharacteristic = pService->createCharacteristic(
-        CHARACTERISTIC_UUID,
+        TX_DIE_VAL,
         BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY
     );
     pService->start();
