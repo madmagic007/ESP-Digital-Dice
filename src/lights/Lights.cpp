@@ -1,4 +1,3 @@
-
 #include "Lights.h"
 
 u8_t Lights::diceValues[3] = {0, 0, 0};
@@ -44,8 +43,8 @@ void Lights::setValues(u8_t val1, u8_t val2, u8_t val3) {
 }
 
 void Lights::displayBatteryValue() {
-    u8_t percentage =  Util::getBatteryPercentage();
-    u8_t diceSum = round(percentage / 100 * 18);
+    u8_t percentage = Util::getBatteryPercentage();
+    u8_t diceSum = round(percentage / 100.0 * 18.0);
     
     u8_t die1 = diceSum >= 6 ? 6 : diceSum;
     diceSum -= die1;
@@ -60,6 +59,8 @@ void Lights::displayBatteryValue() {
 
 void Lights::setBrightness(u8_t val) {
     brightness = val;
+    prefs.putInt("brightness", val);
+
     if (val > 92) val = 92;
     if (val < 8) val = 8; // shorter than 8us causes issues
     

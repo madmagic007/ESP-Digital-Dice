@@ -6,10 +6,13 @@
 
 void setup() {
   Serial.begin(115200);
+  //delay(2000);
   WiFi.mode(WIFI_OFF);
 
+  Lights::prefs.begin("die-settings", false);
+
   Lights::setup();
-  Lights::setBrightness(10);
+  Lights::setBrightness(Lights::prefs.getInt("brightness", 20));
   Lights::displayBatteryValue();
   
   ble::init();

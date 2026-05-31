@@ -5,6 +5,7 @@
 #include <PinMapping.h>
 #include <Util.h>
 #include <ble/ble.h>
+#include <Preferences.h>
 
 class Lights {
 private:
@@ -28,4 +29,6 @@ public:
     static void setBrightness(u8_t val);
 
     static inline u8_t brightness = 0;
+
+    static inline Preferences prefs;
 };
